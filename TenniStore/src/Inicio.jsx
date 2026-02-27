@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import './Inicio.css'
 
 const svgPlaceholder = (label, bg) => {
@@ -106,6 +107,93 @@ const accesos = [
 ]
 
 function Inicio({ onNavigate }) {
+  const [weather, setWeather] = useState({
+    status: 'loading',
+    data: null,
+    error: null,
+  })
+
+  useEffect(() => {
+    const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY
+    const city = 'Xicotepec de Juarez, Puebla, MX'
+
+    if (!apiKey) {
+      setWeather({
+        status: 'error',
+        data: null,
+        error: 'Falta la API key de OpenWeather.'
+      })
+      return
+    }
+
+    const fetchWeather = async () => {
+      try {
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&units=metric&lang=es&appid=${apiKey}`
+        const response = await fetch(url)
+
+        if (!response.ok) {
+          throw new Error('No se pudo obtener el clima.')
+        }
+
+        const data = await response.json()
+        setWeather({ status: 'success', data, error: null })
+      } catch (error) {
+        setWeather({
+          status: 'error',
+          data: null,
+          error: error instanceof Error ? error.message : 'Error inesperado.'
+        })
+      }
+    }
+
+    fetchWeather()
+  }, [])
+
+  const weatherContent = () => {
+    if (weather.status === 'loading') {
+      return <p className="weather-status">Cargando clima...</p>
+    }
+
+    if (weather.status === 'error') {
+      return <p className="weather-status">{weather.error}</p>
+    }
+
+    const { data } = weather
+    const icon = data?.weather?.[0]?.icon
+    const description = data?.weather?.[0]?.description
+    const temperature = Math.round(data?.main?.temp)
+    const feelsLike = Math.round(data?.main?.feels_like)
+    const humidity = data?.main?.humidity
+    const wind = Math.round(data?.wind?.speed)
+    const time = new Date((data?.dt ?? 0) * 1000).toLocaleTimeString('es-MX', {
+      hour: '2-digit',
+      minute: '2-digit'
+    })
+
+    return (
+      <>
+        <div className="weather-info">
+          <p className="eyebrow">Clima en Xicotepec de Juarez</p>
+          <h2>{temperature}°C</h2>
+          <p className="weather-desc">{description} · Sensacion {feelsLike}°C</p>
+          <div className="weather-chips">
+            <span>Humedad {humidity}%</span>
+            <span>Viento {wind} m/s</span>
+            <span>Actualizado {time}</span>
+          </div>
+        </div>
+        <div className="weather-visual">
+          {icon && (
+            <img
+              src={`https://openweathermap.org/img/wn/${icon}@2x.png`}
+              alt={description}
+            />
+          )}
+        </div>
+      </>
+    )
+  }
+
   return (
     <div className="tienda">
       <header className="hero">
@@ -142,6 +230,10 @@ function Inicio({ onNavigate }) {
           </div>
         </div>
       </header>
+
+      <section className="weather-banner">
+        {weatherContent()}
+      </section>
 
       <section className="section productos-destacados">
         <div className="section-head">
