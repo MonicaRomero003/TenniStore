@@ -1,0 +1,104 @@
+.pagina {
+  padding: 32px 6vw;
+}
+
+.cabecera-pagina {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.texto-pequeno {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 12px;
+  color: #4b4b4b;
+}
+
+.texto-apagado {
+  color: #4e4e4e;
+  font-size: 14px;
+}
+
+.fila-filtros {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.filtro {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid #1c1c1c;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filtro:hover {
+  background: rgba(28, 28, 28, 0.1);
+  transform: translateY(-2px);
+}
+
+.filtro.activo {
+  background: #1c1c1c;
+  color: #ffffff;
+}
+
+.filtro.activo:hover {
+  background: #cf7b42;
+}
+
+.cuadricula {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+.tarjeta {
+  background: #ffffff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 12px 24px rgba(17, 17, 17, 0.08);
+}
+
+.tarjeta img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  background: #f5f2e8;
+  transition: transform 0.3s ease;
+}
+
+.tarjeta:hover img {
+  transform: scale(1.05);
+}
+
+.cuerpo-tarjeta {
+  padding: 16px;
+  display: grid;
+  gap: 10px;
+}
+
+.fila-tarjeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mini {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #1c1c1c;
+  color: #ffffff;
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mini:hover {
+  background: var(--accent);
+  transform: scale(1.05);
+}

@@ -1,34 +1,42 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import MenuSuperior from './MenuSuperior.jsx'
+import Inicio from './Inicio.jsx'
+import Productos from './Productos.jsx'
+import Carrito from './Carrito.jsx'
+import Servicios from './Servicios.jsx'
+import Sucursales from './Sucursales.jsx'
+import Contacto from './Contacto.jsx'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [vistaActual, setVistaActual] = useState('inicio')
+
+  const renderVista = () => {
+    switch (vistaActual) {
+      case 'inicio':
+        return <Inicio onNavigate={setVistaActual} />
+      case 'productos':
+        return <Productos />
+      case 'carrito':
+        return <Carrito />
+      case 'servicios':
+        return <Servicios />
+      case 'sucursales':
+        return <Sucursales />
+      case 'contacto':
+        return <Contacto />
+      default:
+        return <Inicio onNavigate={setVistaActual} />
+    }
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className="app-container">
+      <MenuSuperior vistaActual={vistaActual} cambiarVista={setVistaActual} />
+      <main className="app-content">
+        {renderVista()}
+      </main>
+    </div>
   )
 }
 
